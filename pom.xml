@@ -31,8 +31,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <version.gpg.plugin>1.4</version.gpg.plugin>
-        <version.javadoc.plugin>2.9</version.javadoc.plugin>
+        <version.gpg.plugin>1.6</version.gpg.plugin>
+        <version.javadoc.plugin>2.10.3</version.javadoc.plugin>
         <version.source.plugin>2.2.1</version.source.plugin>
     </properties>
 
@@ -43,9 +43,15 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>${version.gpg.plugin}</version>
-                    <configuration>
-                        <useAgent>true</useAgent>
-                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
 
                 <plugin>
@@ -69,25 +75,56 @@
                         <execution>
                             <id>attach-sources</id>
                             <goals>
-                                <goal>jar-no-fork</goal>
+                                <goal>jar</goal>
                             </goals>
                         </execution>
                     </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
 
     <distributionManagement>
         <snapshotRepository>
-            <id>sonatype-nexus-snapshots</id>
+            <id>ossrh</id>
             <name>Sonatype Nexus Snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
-            <id>sonatype-nexus-staging</id>
+            <id>ossrh</id>
             <name>Nexus Release Repository</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
     </distributionManagement>
+
+    <developers>
+        <developer>
+            <id>jk</id>
+            <name>Joe Khan</name>
+            <email>joekhan@logicbig.com</email>
+            <organization>logicbig</organization>
+            <organizationUrl>http://www.logicbig.com</organizationUrl>
+            <roles>
+                <role>Owner</role>
+                <role>Engineer</role>
+            </roles>
+            <timezone>-6</timezone>
+        </developer>
+    </developers>
 </project>
